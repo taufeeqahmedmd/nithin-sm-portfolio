@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+/* =========================================================
+   Theme tokens (Tailwind v4)
+   ========================================================= */
+@theme {
+  --color-bg: #0a0c0a;
+  --color-bg-2: #0f120f;
+  --color-surface: #141814;
+  --color-surface-2: #1b201b;
+  --color-ink: #06130a;
+  --color-accent: #22c55e;
+  --color-accent-2: #4ade80;
+  --color-accent-deep: #0f6b3a;
+  --color-text: #f2f5f0;
+  --color-muted: #9aa49a;
+
+  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2s infinite;
+  --animate-breathe: breathe 6s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 40s linear infinite;
+  --animate-progress: progress 5s linear forwards;
+
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.55); }
+    70% { box-shadow: 0 0 0 9px rgba(74, 222, 128, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+  }
+  @keyframes breathe {
+    0%, 100% { transform: translate(-50%, -52%) scale(1); }
+    50% { transform: translate(-50%, -52%) scale(1.04); }
+  }
+  @keyframes spin-slow {
+    to { transform: translate(-50%, -52%) rotate(360deg); }
+  }
+  @keyframes progress {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+}
+
+/* =========================================================
+   Base
+   ========================================================= */
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--color-accent); color: var(--color-ink); }
+
+/* =========================================================
+   Project utilities (np- prefix) for things that are awkward
+   as inline Tailwind: pseudo-elements, masks, noise, reveals.
+   ========================================================= */
+@utility np-container {
+  width: min(1240px, calc(100% - 48px));
+  margin-inline: auto;
+  @media (max-width: 640px) { width: calc(100% - 32px); }
+}
+
+@utility np-grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@utility np-cursor-glow {
+  position: fixed; left: 0; top: 0; width: 520px; height: 520px; z-index: 0;
+  border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.14), transparent 60%);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.4s;
+}
+
+@utility np-hero-bg {
+  background:
+    radial-gradient(900px 620px at 18% 0%, #1f9a55 0%, #0f5a33 35%, rgba(10, 12, 10, 0) 70%),
+    linear-gradient(180deg, #0f1a12 0%, #0a0c0a 100%);
+}
+@utility np-hero-glow {
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.28) 0%, rgba(34, 197, 94, 0.08) 40%, transparent 65%);
+  filter: blur(20px);
+}
+@utility np-img-fade {
+  -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+}
+@utility np-marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+@utility np-monogram {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.45);
+  text-shadow: 0 0 60px rgba(74, 222, 128, 0.35);
+}
+@utility np-ring-inner {
+  background: radial-gradient(circle at 50% 30%, rgba(74, 222, 128, 0.35), rgba(15, 90, 51, 0.35) 55%, rgba(10, 12, 10, 0) 72%);
+  box-shadow: inset 0 0 80px rgba(74, 222, 128, 0.15);
+}
+@utility np-highlight-bg {
+  background: radial-gradient(500px 300px at 100% 0%, rgba(34, 197, 94, 0.35), transparent 60%), var(--color-surface-2);
+}
+@utility np-contact-bg {
+  background: linear-gradient(135deg, #34d472 0%, #1fb45a 45%, #0f7a3e 100%);
+}
+@utility np-spotlight-bg {
+  background: linear-gradient(180deg, var(--color-bg) 0%, #0c110d 50%, var(--color-bg) 100%);
+}
+@utility np-stage-bg {
+  background:
+    radial-gradient(720px 420px at 50% 28%, rgba(34, 197, 94, 0.22), transparent 70%),
+    linear-gradient(180deg, #10180f 0%, var(--color-bg-2) 100%);
+}
+@utility np-card-surface {
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg-2) 100%);
+}
+
+/* Ticket Factory phone stage */
+@utility np-phone-screen {
+  background:
+    radial-gradient(260px 200px at 85% 8%, rgba(255, 255, 255, 0.22), transparent 70%),
+    radial-gradient(320px 260px at 0% 100%, rgba(6, 19, 10, 0.45), transparent 70%),
+    linear-gradient(165deg, #3ddc7a 0%, #1fb45a 42%, #0f7a3e 100%);
+}
+/* Semicircle cut-outs on both sides so the screen gradient shows through the perforation */
+@utility np-ticket-notch {
+  -webkit-mask:
+    radial-gradient(circle at 0 50%, transparent 10px, #000 10.5px),
+    radial-gradient(circle at 100% 50%, transparent 10px, #000 10.5px);
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(circle at 0 50%, transparent 10px, #000 10.5px),
+    radial-gradient(circle at 100% 50%, transparent 10px, #000 10.5px);
+  mask-composite: intersect;
+}
+/* Zig-zag torn edge along the bottom of the barcode stub */
+@utility np-ticket-tear {
+  -webkit-mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat,
+    conic-gradient(from -45deg at bottom, transparent, #000 1deg 89deg, transparent 90deg) bottom / 11px 7px repeat-x;
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat,
+    conic-gradient(from -45deg at bottom, transparent, #000 1deg 89deg, transparent 90deg) bottom / 11px 7px repeat-x;
+}
+
+/* Gradient hairline that fades in on hover */
+@utility np-card {
+  position: relative;
+  &::before {
+    content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.5), transparent 40%, transparent 60%, rgba(74, 222, 128, 0.25));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  &:hover::before { opacity: 1; }
+}
+
+/* Scroll reveal */
+@utility np-reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo);
+  transition-delay: var(--d, 0s);
+  &.is-visible { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .np-reveal { opacity: 1; transform: none; transition: none; }
+  .animate-float, .animate-marquee, .animate-pulse-ring, .animate-breathe, .animate-spin-slow, .animate-progress { animation: none; }
+  html { scroll-behavior: auto; }
+}
